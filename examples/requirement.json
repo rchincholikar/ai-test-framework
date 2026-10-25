@@ -1,0 +1,11 @@
+{
+  "ticketId": "PROJ-1234",
+  "title": "User can reset password via email",
+  "description": "A registered user can request a password reset link via email. The link expires after 24 hours. Clicking a valid link shows a password reset form.",
+  "acceptanceCriteria": [
+    "Given a registered user, when they click 'Forgot password' and submit their email, then a reset email is sent",
+    "Given a reset link, when clicked within 24 hours, then a password reset form is shown",
+    "Given an expired reset link, when clicked, then an error message 'Link expired' is shown",
+    "Given a password reset form, when a valid new password is submitted, then the password is updated and the user can log in with it"
+  ]
+}

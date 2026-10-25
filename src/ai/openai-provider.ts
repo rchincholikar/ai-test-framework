@@ -49,11 +49,6 @@ export class OpenAIProvider implements AIProvider {
       .replace(/\s*```$/, '')
       .trim();
 
-    // TEMP: remove this block after verifying the fix works
-    console.error('\n=== RAW LLM RESPONSE ===');
-    console.error(cleaned);
-    console.error('=== END ===\n');
-
     const parsed = JSON.parse(cleaned);
     return schema.parse(parsed);
   }

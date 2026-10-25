@@ -9,10 +9,7 @@ export class OpenAIProvider implements AIProvider {
   private model: string;
 
   constructor(apiKey: string, model: string, baseURL?: string) {
-    this.client = new OpenAI({
-      apiKey,
-      baseURL, // ← when set (e.g. Groq), routes requests there
-    });
+    this.client = new OpenAI({ apiKey, baseURL });
     this.model = model;
   }
 
@@ -21,6 +18,8 @@ export class OpenAIProvider implements AIProvider {
     const res = await this.client.chat.completions.create({
       model: this.model,
       temperature: req.temperature ?? 0,
+      max_tokens: 8192,
+      response_format: { type: 'json_object' },
       messages: [
         ...(req.system ? [{ role: 'system' as const, content: req.system }] : []),
         { role: 'user' as const, content: req.user },
@@ -49,6 +48,11 @@ export class OpenAIProvider implements AIProvider {
       .replace(/^```\s*/i, '')
       .replace(/\s*```$/, '')
       .trim();
+
+    // TEMP: remove this block after verifying the fix works
+    console.error('\n=== RAW LLM RESPONSE ===');
+    console.error(cleaned);
+    console.error('=== END ===\n');
 
     const parsed = JSON.parse(cleaned);
     return schema.parse(parsed);
